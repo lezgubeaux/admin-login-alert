@@ -163,6 +163,11 @@ class Admin_Login_Alert
 		 * when a user (of an admministrator level) logs in, send alert (with login details)
 		 */
 		$this->loader->add_action('wp_login', $plugin_admin, 'send_alert');
+
+		/**
+		 * send an alert on user role change to admin
+		 */
+		$this->loader->add_action('set_user_role', $plugin_admin, 'get_role_change');
 	}
 
 	/**

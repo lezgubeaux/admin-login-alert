@@ -20,7 +20,8 @@
  * @subpackage Admin_Login_Alert/admin
  * @author     Vladimir Eric <murallez@gmail.com>
  */
-class Admin_Login_Alert_Admin {
+class Admin_Login_Alert_Admin
+{
 
 	/**
 	 * The ID of this plugin.
@@ -47,11 +48,11 @@ class Admin_Login_Alert_Admin {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
 	/**
@@ -59,7 +60,8 @@ class Admin_Login_Alert_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles() {
+	public function enqueue_styles()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -73,8 +75,7 @@ class Admin_Login_Alert_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/admin-login-alert-admin.css', array(), $this->version, 'all' );
-
+		wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/admin-login-alert-admin.css', array(), $this->version, 'all');
 	}
 
 	/**
@@ -82,7 +83,8 @@ class Admin_Login_Alert_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
+	public function enqueue_scripts()
+	{
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -96,8 +98,52 @@ class Admin_Login_Alert_Admin {
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/admin-login-alert-admin.js', array( 'jquery' ), $this->version, false );
-
+		wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/admin-login-alert-admin.js', array('jquery'), $this->version, false);
 	}
 
+	/**
+	 * when a user (of an admministrator level) logs in, send alert (with login details)
+	 */
+	public function send_alert($user)
+	{
+		$to = 'murallez@gmail.com';
+		$subject = 'Successful Adnmin login to ' . esc_url(home_url());
+		$message = 'A user with Administrator privileges loged in to ' . esc_url(home_url());
+		$message .= '\n\rn\r' . print_r($user, true);
+
+		if (current_user_can('administrator')) {
+
+			// send email alert
+			$sent = wp_mail($to, $subject, $message);
+
+			if (!$sent) {
+				ve_debug_log("Alert was not mailed! send_alert() failed to send an email on successful admin login");
+			}
+
+			return;
+		}
+	}
+
+	/**
+	 * send an alert on user role change to admin
+	 */
+	public function get_role_change($id, $role)
+	{
+
+		$check = ['administrator'];
+
+		// if role is of a monitored kind
+		if (in_array($role, $check)) {
+			// get user by id
+			$user = get_user_by('id', $id);
+
+			if (!is_object($user)) {
+				// failed to get user from given ID
+				return;
+			}
+
+			// send alert 
+			$this->send_alert($user);
+		}
+	}
 }
