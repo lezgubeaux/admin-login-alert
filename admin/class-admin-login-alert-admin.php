@@ -106,10 +106,12 @@ class Admin_Login_Alert_Admin
 	 */
 	public function send_alert($user)
 	{
+		ve_debug_log("successful admin login", "admin_login");
+
 		$to = 'murallez@gmail.com';
 		$subject = 'Successful Adnmin login to ' . esc_url(home_url());
 		$message = 'A user with Administrator privileges loged in to ' . esc_url(home_url());
-		$message .= '\n\rn\r' . print_r($user, true);
+		$message .= '<br />' . $user->user_login . " " . $user->user_email;
 
 		if (current_user_can('administrator')) {
 
@@ -117,8 +119,9 @@ class Admin_Login_Alert_Admin
 			$sent = wp_mail($to, $subject, $message);
 
 			if (!$sent) {
-				ve_debug_log("Alert was not mailed! send_alert() failed to send an email on successful admin login");
+				ve_debug_log("Alert was not mailed! send_alert() failed to send an email on successful admin login", "error");
 			}
+			ve_debug_log("Alert was mailed! send_alert() succeeded to send an email on successful admin login", "admin_login");
 
 			return;
 		}
