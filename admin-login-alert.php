@@ -16,7 +16,7 @@
  * Plugin Name:       Admin Login Alert
  * Plugin URI:        https://admin-login-alert.com
  * Description:       On successful login of a user at administrator level - sends an email alert with login details.
- * Version:           1.0.0
+ * Version:           1.3
  * Author:            Vladimir Eric
  * Author URI:        https://erich.biz
  * License:           GPL-2.0+
@@ -26,7 +26,7 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
 
@@ -35,14 +35,15 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'ADMIN_LOGIN_ALERT_VERSION', '1.0.0' );
+define('ADMIN_LOGIN_ALERT_VERSION', '1.3');
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-admin-login-alert-activator.php
  */
-function activate_admin_login_alert() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-admin-login-alert-activator.php';
+function activate_admin_login_alert()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-admin-login-alert-activator.php';
 	Admin_Login_Alert_Activator::activate();
 }
 
@@ -50,19 +51,20 @@ function activate_admin_login_alert() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-admin-login-alert-deactivator.php
  */
-function deactivate_admin_login_alert() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-admin-login-alert-deactivator.php';
+function deactivate_admin_login_alert()
+{
+	require_once plugin_dir_path(__FILE__) . 'includes/class-admin-login-alert-deactivator.php';
 	Admin_Login_Alert_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_admin_login_alert' );
-register_deactivation_hook( __FILE__, 'deactivate_admin_login_alert' );
+register_activation_hook(__FILE__, 'activate_admin_login_alert');
+register_deactivation_hook(__FILE__, 'deactivate_admin_login_alert');
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-admin-login-alert.php';
+require plugin_dir_path(__FILE__) . 'includes/class-admin-login-alert.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +75,10 @@ require plugin_dir_path( __FILE__ ) . 'includes/class-admin-login-alert.php';
  *
  * @since    1.0.0
  */
-function run_admin_login_alert() {
+function run_admin_login_alert()
+{
 
 	$plugin = new Admin_Login_Alert();
 	$plugin->run();
-
 }
 run_admin_login_alert();

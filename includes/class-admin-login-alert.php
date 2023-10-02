@@ -72,7 +72,7 @@ class Admin_Login_Alert
 		if (defined('ADMIN_LOGIN_ALERT_VERSION')) {
 			$this->version = ADMIN_LOGIN_ALERT_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.3';
 		}
 		$this->plugin_name = 'admin-login-alert';
 
@@ -162,7 +162,7 @@ class Admin_Login_Alert
 		/**
 		 * when a user (of an admministrator level) logs in, send alert (with login details)
 		 */
-		$this->loader->add_action('wp_login', $plugin_admin, 'send_alert');
+		$this->loader->add_action('wp_login', $plugin_admin, 'send_alert', 10, 2);
 
 		/**
 		 * send an alert on user role change to admin

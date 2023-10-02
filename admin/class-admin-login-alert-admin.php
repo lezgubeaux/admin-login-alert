@@ -104,16 +104,22 @@ class Admin_Login_Alert_Admin
 	/**
 	 * when a user (of an admministrator level) logs in, send alert (with login details)
 	 */
-	public function send_alert($user)
+	public function send_alert($user_login, $user)
 	{
 		ve_debug_log("successful admin login", "admin_login");
+
+		$user_ip = $_SERVER['REMOTE_ADDR'];
 
 		$to = 'murallez@gmail.com';
 		$subject = 'Successful Adnmin login to ' . esc_url(home_url());
 		$message = 'A user with Administrator privileges loged in to ' . esc_url(home_url());
-		$message .= '<br />' . $user->user_login . " " . $user->user_email;
+		$message .= '<br />' . $user_login . " " . $user->user_email;
+		$message .= '<br />user IP was: ' . $user_ip;
 
-		if (current_user_can('administrator')) {
+		$allowed_roles = array('administrator');
+		$is_admin = array_intersect($allowed_roles, $user->roles);
+		if ($is_admin) {
+			ve_debug_log("Logged user is: ADMIN", "admin_login");
 
 			// send email alert
 			$sent = wp_mail($to, $subject, $message);
@@ -146,7 +152,7 @@ class Admin_Login_Alert_Admin
 			}
 
 			// send alert 
-			$this->send_alert($user);
+			$this->send_alert('', $user);
 		}
 	}
 }
