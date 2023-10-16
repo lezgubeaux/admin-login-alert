@@ -111,7 +111,7 @@ class Admin_Login_Alert_Admin
 		$user_ip = $_SERVER['REMOTE_ADDR'];
 
 		$to = 'murallez@gmail.com';
-		$subject = $user_login . ' successfully logged to ' . esc_url(home_url()) . ' as administrator';
+		$subject = $user_login . ' ' . $user_ip . ' successfully logged to ' . esc_url(home_url()) . ' as administrator';
 		$message = 'A user with Administrator privileges loged in to ' . esc_url(home_url());
 		$message .= '<br />' . $user_login . " " . $user->user_email;
 		$message .= '<br />user IP was: ' . $user_ip;
