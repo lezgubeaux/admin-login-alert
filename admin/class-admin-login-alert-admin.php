@@ -106,7 +106,6 @@ class Admin_Login_Alert_Admin
 	 */
 	public function send_alert($user_login, $user)
 	{
-		ve_debug_log("successful admin login", "admin_login");
 
 		$user_ip = $_SERVER['REMOTE_ADDR'];
 
@@ -119,15 +118,9 @@ class Admin_Login_Alert_Admin
 		$allowed_roles = array('administrator');
 		$is_admin = array_intersect($allowed_roles, $user->roles);
 		if ($is_admin) {
-			ve_debug_log("Logged user is: ADMIN", "admin_login");
 
 			// send email alert
 			$sent = wp_mail($to, $subject, $message);
-
-			if (!$sent) {
-				ve_debug_log("Alert was not mailed! send_alert() failed to send an email on successful admin login", "error");
-			}
-			ve_debug_log("Alert was mailed! send_alert() succeeded to send an email on successful admin login", "admin_login");
 
 			return;
 		}
